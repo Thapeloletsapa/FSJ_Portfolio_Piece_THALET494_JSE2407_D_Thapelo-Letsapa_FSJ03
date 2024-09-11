@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-undef */
 
-
+import Header from "./components/Header.js"
 import ProductGrid from './components/ProductGrid';
 import Pagination from './components/Pagination';
 
@@ -18,6 +18,7 @@ export default async function HomePage({ searchParams }) {
   
   return (
     <div className="container mx-auto py-10">
+      <Header />
       <ProductGrid products={products} />
       <Pagination currentPage={parseInt(page)} totalPages={20} /> {/* Assuming 10 pages */}
     </div>

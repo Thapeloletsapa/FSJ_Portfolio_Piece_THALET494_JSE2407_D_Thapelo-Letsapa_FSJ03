@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-async-client-component */
 'use client'; 
 /* eslint-disable @next/next/no-img-element */
 import Image from "next/image";

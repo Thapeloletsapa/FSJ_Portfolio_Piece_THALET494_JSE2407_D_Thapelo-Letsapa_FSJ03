@@ -5,6 +5,17 @@ import Image from 'next/image'
 import Link from 'next/link';
 import { useState } from 'react';
 
+/**
+ * Renders a product card with an image, title, price, category, and a link to view
+ * the product details.
+ * @param {Object} product - The product object, with the following properties:
+ *   - id: The product ID
+ *   - title: The product title
+ *   - price: The product price as a string
+ *   - category: The product category as a string
+ *   - thumbnail: The product thumbnail image URL
+ *   - images: An array of product image URLs
+ */
 export default function ProductCard({ product }) {
     const [imageError, setImageError] = useState(false);
     const getImageSrc = () => {
