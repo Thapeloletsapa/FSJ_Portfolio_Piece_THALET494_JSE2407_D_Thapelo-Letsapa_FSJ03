@@ -12,3 +12,4 @@ export default function Pagination({ currentPage, totalPages }) {
       </div>
     );
   }
+       

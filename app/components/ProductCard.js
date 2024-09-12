@@ -16,6 +16,8 @@ import { useState } from 'react';
  *   - thumbnail: The product thumbnail image URL
  *   - images: An array of product image URLs
  */
+
+
 export default function ProductCard({ product }) {
     const [imageError, setImageError] = useState(false);
     const getImageSrc = () => {

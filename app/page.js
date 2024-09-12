@@ -19,8 +19,8 @@ export default async function HomePage({ searchParams }) {
   return (
     <div className="container mx-auto py-10">
       <Header />
-      <ProductGrid products={products} />
-      <Pagination currentPage={parseInt(page)} totalPages={20} /> {/* Assuming 10 pages */}
+      <ProductGrid products={products} /> 
+      <Pagination currentPage={parseInt(page)} totalPages={20} /> 
     </div>
   );
 }
