@@ -30,7 +30,7 @@ export default function ProductCard({ product }) {
     <div className="border p-4 rounded-lg shadow hover:shadow-md">
       <Image src={getImageSrc()}  width={400} // Adjust width as needed
             height={300} alt={product.title} className="h-48 w-full object-contain mb-4"  onError={() => setImageError(true)}/>
-    
+     <h2 className="font-semibold text-lg">{product.rating}</h2>
       <h2 className="font-semibold text-lg">{product.title}</h2>
       <p className="text-gray-500">${product.price}</p>
       <p className="text-sm text-gray-400">{product.category}</p>
