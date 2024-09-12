@@ -26,6 +26,7 @@ export default function ProductCard({ product }) {
         return '/placeholder-image.jpg'; // Fallback image should be in the public directory
       };
     
+      
   return (
     <div className="border p-4 rounded-lg shadow hover:shadow-md">
       <Image src={getImageSrc()}  width={400} // Adjust width as needed
