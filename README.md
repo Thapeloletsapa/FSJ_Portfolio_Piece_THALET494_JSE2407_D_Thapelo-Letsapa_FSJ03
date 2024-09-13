@@ -51,3 +51,35 @@ ProductCard: Displays individual product details on the product listing page.
 ProductPage: Shows detailed information about a selected product, including images, description, and reviews.
 ProductImage: Handles image carousel functionality for product images.
 BackToProductButton: Provides a button to navigate back to the product listing.
+
+I welcome contributions to improve the project. Please follow these steps:
+
+Fork the Repository
+
+Create a Feature Branch
+
+bash
+Copy code
+git checkout -b feature/your-feature
+Commit Your Changes
+
+bash
+Copy code
+git commit -m "Add a descriptive message"
+Push to the Branch
+
+bash
+Copy code
+git push origin feature/your-feature
+Open a Pull Request
+
+Go to the repository on GitHub and open a pull request.
+
+License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+Contact
+For any questions or feedback, please contact:
+
+Your Name: thapelolletsapa@gmail.com
+GitHub Profile: Thapelo letsapa
