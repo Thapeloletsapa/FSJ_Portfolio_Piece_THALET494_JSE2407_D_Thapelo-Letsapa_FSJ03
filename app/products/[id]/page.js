@@ -48,13 +48,34 @@ export default async function ProductPage({ params }) {
         <p>{product.description}</p>
         <p className="text-lg text-gray-500">${product.price}</p>
         <p className="text-sm text-gray-400">Category: {product.category}</p>
+        
+        <p className="font-semibold text-lg">{product.tags}</p>
         <p className="font-medium text-lg">
         {product.discountPercentage > 0 ? `Discount: ${product.discountPercentage}%` : ''}
       </p>
-      <p className="font-semibold text-lg">{product.rating}</p>
+      <p className="font-semibold text-lg">Stock available : {product.stock}</p>
+      <p className="font-semibold text-lg">Rating : {product.rating}</p>
+
+
+       {/* Reviews Section */}
+       <div className="bg-gray-50 p-6 rounded-lg shadow-lg mb-12">
+        <h3 className="text-2xl font-semibold text-gray-800 mb-4">Reviews</h3>
+        {product.reviews.length > 0 ? (
+          product.reviews.map((review, index) => (
+            <div key={index} className="border-b border-gray-200 py-4">
+              <p className="font-semibold text-gray-700">{review.reviewerName}</p>
+              <p className="text-sm text-gray-500">Date: {new Date(review.date).toLocaleDateString()}</p>
+              <p className="text-sm text-gray-500">Rating: {review.rating}/5</p>
+              <p className="mt-2 text-gray-600">"{review.comment}"</p>
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-600">No reviews available.</p>
+        )}
+      </div>
+
         <BackToProductButton />
         {/* Add tags, rating, stock, and reviews */}
       </div>
     );
   }
-  
