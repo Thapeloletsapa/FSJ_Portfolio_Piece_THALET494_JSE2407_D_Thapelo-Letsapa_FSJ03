@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.js eCommerce Store
 
-## Getting Started
+## Overview
 
-First, run the development server:
+Welcome to the Next.js eCommerce Store! This application is built using Next.js, a React framework, and provides a fully-featured eCommerce platform. It includes dynamic product pages, responsive design, and user authentication.
 
-```bash
-npm run dev
+## Features
+
+- **Product Listing**: Display a grid of products with images, titles, prices, and categories.
+- **Product Details**: View detailed product information, including images, descriptions, ratings, reviews, and pricing.
+- **Dynamic Image Carousel**: Navigate through multiple product images with a carousel component.
+- **Filtering and Sorting**: Filter products by category and sort by price.
+- **Pagination/Infinite Scroll**: Load products incrementally as users navigate through pages.
+- **User Authentication**: Secure login and registration functionality.
+- **Shopping Cart**: Add products to the shopping cart, view, and manage items.
+- **Reviews**: Users can read and view product reviews.
+- **Responsive Design**: Optimized for all screen sizes and devices.
+
+## Installation
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (version 14.x or later)
+- [npm](https://www.npmjs.com/) or [yarn](https://classic.yarnpkg.com/) for package management
+
+### Getting Started
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/your-username/your-repository-name.git
+   cd your-repository-name
+
+**Install Dependencies** 
+
+npm install
 # or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+yarn install
+ 
+ **Configure Environment Variables**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+ NEXT_PUBLIC_API_URL=https://next-ecommerce-api.vercel.app
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+##**Usage**##
+Home Page: Displays featured products and allows users to browse categories.
+Product Pages: Click on a product to view detailed information and reviews.
+Search and Filters: Use the search bar and filters to find specific products.
+Shopping Cart: Manage your cart items and proceed to checkout.
+Components
+ProductCard: Displays individual product details on the product listing page.
+ProductPage: Shows detailed information about a selected product, including images, description, and reviews.
+ProductImage: Handles image carousel functionality for product images.
+BackToProductButton: Provides a button to navigate back to the product listing.
