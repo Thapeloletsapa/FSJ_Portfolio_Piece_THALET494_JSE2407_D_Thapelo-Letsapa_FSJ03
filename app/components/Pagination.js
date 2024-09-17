@@ -64,15 +64,3 @@ export default function ProductsPage() {
     </div>
   );
 }
-
-
-/*This is a React functional component ProductsPage. It fetches products from an API based on the current page number and displays them in a grid layout. The component also includes pagination controls to navigate between pages.
-
-Here's a breakdown of the key features:
-
-It uses the useState hook to manage four state variables: products, page, loading, and error.
-The useEffect hook is used to fetch products when the component mounts or when the page number changes.
-The fetchProducts function is called with the current page number to retrieve products.
-The component displays a loading message, an error message, or the products grid based on the state.
-The pagination controls allow users to navigate to the previous page, next page, or view the current page number.
-Overall, this component is designed to handle pagination for a list of products, fetching data from an API and updating the UI accordingly.*/
