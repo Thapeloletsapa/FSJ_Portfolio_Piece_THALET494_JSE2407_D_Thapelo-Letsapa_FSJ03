@@ -3,6 +3,9 @@
 import Header from "./components/Header.js"
 import ProductGrid from './components/ProductGrid';
 import Pagination from './components/Pagination';
+import SearchBar from '../components/SearchBar';
+import CategoryFilter from '../components/CategoryFilter';
+import SortByPrice from '../components/SortByPrice';
 
 export const revalidate = 60; // Revalidate every 60 seconds
 // app/page.js
@@ -19,6 +22,9 @@ export default async function HomePage({ searchParams }) {
   return (
     <div className="container mx-auto py-10">
       <Header />
+      <SearchBar />
+      <CategoryFilter categories={['Electronics', 'Fashion', 'Home']} />
+      <SortByPrice />
       <ProductGrid products={products} /> 
       <Pagination currentPage={parseInt(page)} totalPages={20} /> 
     </div>
