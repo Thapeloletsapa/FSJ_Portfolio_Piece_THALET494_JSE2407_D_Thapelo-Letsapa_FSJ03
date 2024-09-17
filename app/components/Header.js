@@ -2,7 +2,17 @@
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
-import Image from 'next/image';
+/**
+ * next/link allows you to do client-side route transitions between pages, by
+ * wrapping your anchor tags in a Link component. It also allows you to pass
+ * props through to the linked page, which can be used to pre-render the page
+ * with the correct data.
+ *
+ * Link uses the browser's history API to navigate between pages, which
+ * allows it to work with the browser's back and forward buttons.
+ *
+ * @see https://nextjs.org/docs/api-reference/next/link
+ */
 
 const  Header = () => {
 const cartItems = 0;
