@@ -3,9 +3,9 @@
 import Header from "./components/Header.js"
 import ProductGrid from './components/ProductGrid';
 import Pagination from './components/Pagination';
-import SearchBar from '../components/SearchBar';
-import CategoryFilter from '../components/CategoryFilter';
-import SortByPrice from '../components/SortByPrice';
+import SearchBar from './components/SearchBar';
+import CategoryFilter from './components/CategoryFilter';
+import SortByPrice from './components/SortByPrice';
 
 export const revalidate = 60; // Revalidate every 60 seconds
 // app/page.js
