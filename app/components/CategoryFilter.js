@@ -3,10 +3,11 @@ import { useRouter } from 'next/router';
 
 const CategoryFilter = ({ categories }) => {
   const router = useRouter();
+
   const handleCategoryChange = (category) => {
     router.push({
       pathname: router.pathname,
-      query: { ...router.query, category },
+      query: { ...router.query, category }, // Update URL with the category filter
     });
   };
 
