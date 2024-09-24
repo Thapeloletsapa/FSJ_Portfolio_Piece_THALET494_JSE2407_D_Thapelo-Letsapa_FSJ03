@@ -1,25 +1,18 @@
-'use client'
+'use client'; // Marking the component as a Client Component
 
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation'; // Use next/navigation for router
 
 const SortByPrice = () => {
   const router = useRouter();
 
   const handleSortChange = (order) => {
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, sort: order },
-    });
+    // Update the URL with the selected sort order (ascending or descending)
+    router.push(`/?sort=${order}`);
   };
 
   return (
     <div>
-      <label htmlFor="sort">Sort by Price:</label>
-      <select
-        id="sort"
-        onChange={(e) => handleSortChange(e.target.value)}
-        value={router.query.sort || ''}
-      >
+      <select onChange={(e) => handleSortChange(e.target.value)}>
         <option value="asc">Price: Low to High</option>
         <option value="desc">Price: High to Low</option>
       </select>
