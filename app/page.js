@@ -60,7 +60,7 @@ export default async function HomePage({ searchParams }) {
     <div className="container mx-auto py-10">
       <Header />
       <SearchBar />
-      <CategoryFilter categories={['smartphones', 'laptops', 'fragrances', 'skincare', 'groceries', 'home-decoration']} />
+      <CategoryFilter categories={['smartphones', 'laptops', 'fragrances', 'skincare', 'groceries', 'home-decoration', 'beauty']} />
       <SortByPrice />
       {products.length > 0 ? (
         <ProductGrid products={products} />
