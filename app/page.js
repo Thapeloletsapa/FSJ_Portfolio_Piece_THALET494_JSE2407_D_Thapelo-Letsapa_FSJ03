@@ -1,4 +1,4 @@
-// app/page.js
+import Head from 'next/head';
 import Header from "./components/Header";
 import ProductGrid from './components/ProductGrid';
 import Pagination from './components/Pagination';
@@ -58,6 +58,13 @@ export default async function HomePage({ searchParams }) {
 
   return (
     <div className="container mx-auto py-10">
+      <Head>
+        <title>E-Commerce App</title>
+        <meta name="description" content="E-Commerce App - Browse and shop from our wide range of products" />
+        <meta property="og:title" content="E-Commerce App" />
+        <meta property="og:description" content="E-Commerce App - Browse and shop from our wide range of products" />
+        <meta property="og:image" content="https://example.com/og-image.jpg" />
+      </Head>
       <Header />
       <SearchBar />
       <CategoryFilter categories={['smartphones', 'laptops', 'fragrances', 'skincare', 'groceries', 'home-decoration', 'beauty']} />
