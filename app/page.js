@@ -4,7 +4,7 @@ import ProductGrid from './components/ProductGrid';
 import Pagination from './components/Pagination';
 import SearchBar from './components/SearchBar';
 import CategoryFilter from './components/CategoryFilter';
-import SortByPrice from './components/SortByPrice';
+import SortOptions from "./components/SortOptions";
 
 export const revalidate = 60; // Revalidate every 60 seconds
 
