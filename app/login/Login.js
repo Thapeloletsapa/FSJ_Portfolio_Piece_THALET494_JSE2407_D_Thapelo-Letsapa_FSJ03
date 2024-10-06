@@ -1,15 +1,28 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import app from "../src/firebaseConfig";
 import { useState } from 'react';
 import Link from 'next/link';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const auth = getAuth(app);
   const handleLogin = (e) => {
     e.preventDefault();
     // Implement login logic here
+    const auth = getAuth(app);
+
+function signInUser(email, password) {
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      console.log("Signed in:", userCredential.user);
+    })
+    .catch((error) => {
+      console.error("Error signing in:", error);
+    });
+}
   };
 
   return (
