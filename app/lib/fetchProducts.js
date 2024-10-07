@@ -14,7 +14,7 @@ export async function fetchProducts(page, search, sort, category) {
   const limit = 20;
   const skip = (page - 1) * limit;
 
-  let url = `https://next-ecommerce-api.vercel.app/products?limit=${limit}&skip=${skip}`;
+  let url = `http://localhost:3001/api/products`;
 
   if (search) url += `&search=${encodeURIComponent(search)}`;
   if (category) url += `&category=${encodeURIComponent(category)}`;

@@ -12,4 +12,5 @@ export async function GET(req) {
       'Content-Type': 'application/json',
     },
   });
+  
 }

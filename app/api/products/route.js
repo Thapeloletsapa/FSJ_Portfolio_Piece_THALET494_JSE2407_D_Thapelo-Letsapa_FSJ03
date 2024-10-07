@@ -11,7 +11,7 @@ export async function GET(req) {
   
   // Get query parameters
   const page = parseInt(searchParams.get('page')) || 1;
-  const limitCount = parseInt(searchParams.get('limit')) || 10;
+  const limitCount = parseInt(searchParams.get('limit')) || 20;
   const search = searchParams.get('search') || '';
   const category = searchParams.get('category') || '';
   const sortBy = searchParams.get('sort') || 'asc'; // 'asc' or 'desc'

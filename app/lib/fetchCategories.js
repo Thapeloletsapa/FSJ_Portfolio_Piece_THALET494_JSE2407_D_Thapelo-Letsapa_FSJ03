@@ -9,7 +9,7 @@
 export const fetchCategories = async () => {
     try {
       const response = await fetch(
-        "https://next-ecommerce-api.vercel.app/categories",
+        "http://localhost:3001/api/categories",
         { cache: "force-cache" }
       );
       if (!response.ok) {
