@@ -9,7 +9,7 @@
 export const fetchCategories = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3001/api/categories",
+        "/api/categories",
         { cache: "force-cache" }
       );
       if (!response.ok) {

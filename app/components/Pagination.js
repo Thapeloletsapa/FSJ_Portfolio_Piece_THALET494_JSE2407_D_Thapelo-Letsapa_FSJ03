@@ -49,7 +49,7 @@ export default function ProductsPage() {
       <div className="flex justify-center mt-8">
         <button
           onClick={handlePreviousPage}
-          className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+          className="bg-slate-600-500 text-white px-4 py-2 rounded mr-2"
           disabled={page === 1}
         >
           Previous
@@ -57,7 +57,7 @@ export default function ProductsPage() {
         <span className="px-4 py-2">Page {page}</span>
         <button
           onClick={handleNextPage}
-          className="bg-blue-500 text-white px-4 py-2 rounded ml-2"
+          className="bg-black-500 text-white px-4 py-2 rounded ml-2"
         >
           Next
         </button>

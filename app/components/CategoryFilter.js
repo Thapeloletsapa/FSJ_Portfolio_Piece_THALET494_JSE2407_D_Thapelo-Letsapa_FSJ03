@@ -43,7 +43,7 @@ export default function CategoryFilter({ categories, selectedCategory }) {
           <option value="">All Categories</option>
           {Array.isArray(categories) && categories.length > 0 ? (
             categories.map((category) => (
-              <option key={category} value={category.toLowerCase()}>
+              <option key={category} >
                 {category}
               </option>
             ))
