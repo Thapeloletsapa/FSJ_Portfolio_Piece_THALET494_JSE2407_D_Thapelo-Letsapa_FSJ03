@@ -33,10 +33,11 @@ export async function GET(req) {
   const querySnapshot = await getDocs(q);
   
   let products = [];
-  querySnapshot.forEach((doc) => {
+  querySnapshot.docs.forEach((doc) => {
+    console.log(doc)
     products.push({ id: doc.id, ...doc.data() });
   });
-
+   
   // Searching using Fuse.js if search is provided
   if (search) {
     const fuse = new Fuse(products, {

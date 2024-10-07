@@ -6,7 +6,6 @@ export async function GET(req) {
   const querySnapshot = await getDocs(categoriesCollection);
   
   const categories = querySnapshot.docs.map(doc => doc.data());
-
   return new Response(JSON.stringify(categories), {
     status: 200,
     headers: {
