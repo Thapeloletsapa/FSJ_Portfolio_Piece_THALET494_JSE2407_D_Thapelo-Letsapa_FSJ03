@@ -1,11 +1,16 @@
-// pages/api/products/categories.js
-import { db } from '../../lib/firebase.js';
+import { db } from '../../lib/firebase.js'; 
 import { collection, getDocs } from 'firebase/firestore';
 
-export default async function handler(req, res) {
-    const categoriesRef = collection(db, 'categories');
-    const categoriesSnapshot = await getDocs(categoriesRef);
-    const categories = categoriesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+export async function GET(req) {
+  const categoriesCollection = collection(db, 'categories'); // Ensure you have a categories collection
+  const querySnapshot = await getDocs(categoriesCollection);
+  
+  const categories = querySnapshot.docs.map(doc => doc.data());
 
-    res.status(200).json(categories);
+  return new Response(JSON.stringify(categories), {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 }

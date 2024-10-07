@@ -1,5 +1,5 @@
 // pages/api/products/[id].js
-import { db } from '../../lib/firebase';
+import { db } from '../../lib/firebase.js';
 import { doc, getDoc } from 'firebase/firestore';
 
 export default async function handler(req, res) {
