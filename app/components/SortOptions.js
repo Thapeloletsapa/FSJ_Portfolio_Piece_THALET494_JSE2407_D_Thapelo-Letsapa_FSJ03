@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense } from "react";
 
 /**
  * SortOptions component for sorting products by price.
@@ -28,20 +27,19 @@ export default function SortOptions({ selectedSort }) {
   };
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div className="flex flex-col items-center mb-6">
-        <div className="flex justify-center mb-2">
-          <select
-            value={selectedSort}
-            onChange={(e) => onSortChange(e.target.value)}
-            className="px-4 py-2 border rounded-md text-black"
-          >
-            <option value="">Default</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-          </select>
-        </div>
+    <div className="flex flex-col items-center mb-6">
+      <div className="flex justify-center mb-2">
+        <select
+          value={selectedSort}
+          onChange={(e) => onSortChange(e.target.value)}
+          className="px-4 py-2 border rounded-md text-black"
+          aria-label="Sort products"
+        >
+          <option value="">Sort by</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+        </select>
       </div>
-    </Suspense>
+    </div>
   );
 }
