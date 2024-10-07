@@ -1,80 +1,152 @@
-import Head from 'next/head';
-import Header from "./components/Header";
-import ProductGrid from './components/ProductGrid';
-import Pagination from './components/Pagination';
-import SearchBar from './components/SearchBar';
-import CategoryFilter from './components/CategoryFilter';
+"use client";
+
+import { Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import ProductList from "./components/ProductList";
+import SearchBar from "./components/SearchBar";
 import SortOptions from "./components/SortOptions";
+import CategoryFilter from "./components/CategoryFilter";
+import { fetchProducts } from "./lib/fetchProducts";
+import { fetchCategories } from "./lib/fetchCategories";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
-export const revalidate = 60; // Revalidate every 60 seconds
+/**
+ * Home component for displaying products with search, sort, and category filter options.
+ *
+ * @returns {JSX.Element} - Rendered Home component.
+ */
+export default function Home() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-export default async function HomePage({ searchParams }) {
-  const page = parseInt(searchParams.page) || 1; // Ensure page is an integer
-  const searchQuery = searchParams.q || '';
-  const category = searchParams.category || '';
-  const sortBy = searchParams.sort || '';
-  const skip = (page - 1) * 20; // Calculate skip for pagination
-  const limit = 20; // Limit for API request
+  const search = searchParams.get("search") || "";
+  const sort = searchParams.get("sort") || "";
+  const category = searchParams.get("category") || "";
+  const page = parseInt(searchParams.get("page") || "1", 10);
 
-  // Base API URL
-  let apiUrl = `https://next-ecommerce-api.vercel.app/products?limit=${limit}&skip=${skip}`;
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  // Handle search query
-  if (searchQuery) {
-    apiUrl = `https://next-ecommerce-api.vercel.app/products/search?q=${encodeURIComponent(searchQuery)}&limit=${limit}&skip=${skip}`;
-  }
-  
-  // Handle category filter
-  if (category) {
-    apiUrl = `https://next-ecommerce-api.vercel.app/products/category/${encodeURIComponent(category)}?limit=${limit}&skip=${skip}`;
-  }
+  useEffect(() => {
+    const loadCategories = async () => {
+      const categoriesData = await fetchCategories();
+      setCategories(categoriesData);
+    };
 
-  // Logging the URL for debugging purposes
-  console.log('Fetching products from:', apiUrl);
+    loadCategories();
+  }, []);
 
-  let products = [];
-  try {
-    const res = await fetch(apiUrl);
-    if (!res.ok) {
-      const errorText = await res.text(); // Read error response for more info
-      console.error('Failed to fetch products:', res.status, errorText);
-      throw new Error('Failed to fetch products');
+  useEffect(() => {
+    const loadProducts = async () => {
+      setLoading(true);
+      const fetchedProducts = await fetchProducts(page, search, sort, category);
+      console.log("Fetched Products:", fetchedProducts); // Debug log
+      setProducts(fetchedProducts);
+      setLoading(false);
+    };
+
+    // Load products whenever the search, sort, category, or page changes
+    loadProducts();
+  }, [page, search, sort, category]);
+
+  /**
+   * Handles pagination to load products for a new page.
+   *
+   * @param {number} newPage - The page number to navigate to.
+   */
+  const handlePagination = (newPage) => {
+    if (!loading) {
+      const params = new URLSearchParams(searchParams);
+      params.set("page", newPage.toString());
+      router.push(`/?${params.toString()}`);
     }
-    const data = await res.json();
-    products = data.products || data; // Adjust based on API response structure
-  } catch (error) {
-    console.error('Error fetching products:', error.message);
-    // Optionally, set products to an empty array or show an error message
-  }
+  };
 
-  // Client-side sorting (if API does not support it)
-  if (sortBy && products.length > 0) {
-    if (sortBy === 'asc') {
-      products.sort((a, b) => a.price - b.price);
-    } else if (sortBy === 'desc') {
-      products.sort((a, b) => b.price - a.price);
-    }
-  }
+  /**
+   * Resets all filters, search, and sort options, returning to the default product list.
+   */
+  const handleReset = () => {
+    router.push("/");
+  };
 
   return (
-    <div className="container mx-auto py-10">
-      <Head>
-        <title>E-Commerce App</title>
-        <meta name="description" content="E-Commerce App - Browse and shop from our wide range of products" />
-        <meta property="og:title" content="E-Commerce App" />
-        <meta property="og:description" content="E-Commerce App - Browse and shop from our wide range of products" />
-        <meta property="og:image" content="https://example.com/og-image.jpg" />
-      </Head>
-      <Header />
-      <SearchBar />
-      <CategoryFilter categories={['smartphones', 'laptops', 'fragrances', 'skincare', 'groceries', 'home-decoration', 'beauty']} />
-      <SortByPrice />
-      {products.length > 0 ? (
-        <ProductGrid products={products} />
-      ) : (
-        <p>No products available at the moment. Please try again later.</p>
-      )}
-      <Pagination currentPage={page} totalPages={Math.ceil(100 / limit)} />
-    </div>
+    <>
+      <Header
+        title="Quality Over Price"
+        description="Visit our online store"
+      />
+
+      <Suspense fallback={<div>Loading...</div>}>
+        <section className="container mx-auto px-4 py-8">
+          
+        <div className="flex justify-start mb-6">
+            <button
+              onClick={handleReset}
+              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 ease-in-out"
+            >
+              Return Home
+            </button>
+          </div>
+
+          <div className="mb-6">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
+              <div className="w-full md:w-1/3">
+                <SearchBar initialSearchTerm={search} />
+              </div>
+              <div className="w-full md:w-1/3">
+                <CategoryFilter
+                  categories={categories}
+                  selectedCategory={category}
+                />
+              </div>
+              <div className="w-full md:w-1/3">
+                <SortOptions selectedSort={sort} />
+              </div>
+            </div>
+          </div>
+
+         
+
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500"></div>
+            </div>
+          ) : products.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {products.map((product) => (
+                <ProductList key={product.id} product={product} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-xl text-gray-600 mt-8">
+              No products available.
+            </p>
+          )}
+
+          <div className="flex justify-between items-center mt-8">
+            <button
+              onClick={() => handlePagination(Math.max(1, page - 1))}
+              disabled={page === 1 || loading}
+              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading && page > 1 ? "Loading..." : "Previous"}
+            </button>
+            <span className="font-semibold text-gray-700">Page {page}</span>
+            <button
+              onClick={() => handlePagination(page + 1)}
+              disabled={products.length < 20 || loading}
+              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading && products.length === 20 ? "Loading..." : "Next"}
+            </button>
+          </div>
+        </section>
+      </Suspense>
+
+      <Footer />
+    </>
   );
 }

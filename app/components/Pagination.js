@@ -1,7 +1,7 @@
 "use client";
-import { useState, useEffect } from 'react';
-import ProductCard from './ProductCard'; 
-import { fetchProducts } from './fetchProducts'; 
+import { useState, useEffect } from "react";
+import ProductCard from "./ProductList";
+import { fetchProducts } from "./fetchProducts";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
@@ -13,7 +13,7 @@ export default function ProductsPage() {
     const loadProducts = async () => {
       setLoading(true);
       setError(null);
-      
+
       try {
         const data = await fetchProducts(page); // Fetch products based on the current page
         setProducts(data);
@@ -27,8 +27,9 @@ export default function ProductsPage() {
     loadProducts();
   }, [page]); // Trigger useEffect when the page changes
 
-  const handleNextPage = () => setPage(prevPage => prevPage + 1);
-  const handlePreviousPage = () => setPage(prevPage => (prevPage > 1 ? prevPage - 1 : 1));
+  const handleNextPage = () => setPage((prevPage) => prevPage + 1);
+  const handlePreviousPage = () =>
+    setPage((prevPage) => (prevPage > 1 ? prevPage - 1 : 1));
 
   return (
     <div className="container mx-auto py-10">
@@ -38,7 +39,7 @@ export default function ProductsPage() {
         <p>Error loading products: {error}</p>
       ) : (
         <div className="grid grid-cols-4 gap-4">
-          {products.map(product => (
+          {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
