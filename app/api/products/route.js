@@ -6,40 +6,49 @@ import Fuse from 'fuse.js';
 
 export async function GET(request) {
   const url = new URL(request.url);
-  const page = parseInt(url.searchParams.get('page') || '1');
-  const pageSize = 10;
+  // console.log(url)
+  const page = parseInt(url.searchParams.get('page')||'1');
+  const pageSize = 21;
+  // console.log(page,pageSize)
   const offset = (page - 1) * pageSize;
+  // console.log(offset,'123445678')
 
+console.log('123')
   const search = url.searchParams.get('search') || '';
-  const category = url.searchParams.get('category') || '';
+  const category = url.searchParams.get('category') || ''; // Get the category parameter
   const sort = url.searchParams.get('sort') || 'asc';
- 
+  console.log(search,category,sort)
+
   try {
     const productsCollection = collection(db, 'products');
-    const productsQuery = query(
-      productsCollection,
-      orderBy('price', sort === 'asc' ? 'asc' : 'desc')
-    );
+    let productsQuery = productsCollection; // Start with the base collection
+
+    // Check if a category is provided, then filter by that category
+    if (category) {
+      productsQuery = query(productsCollection, where('category', '==', category));
+    }
 
     const productsSnapshot = await getDocs(productsQuery);
-    const products = productsSnapshot.docs.map((doc) => ({
+    
+    // Change 'const' to 'let' here to allow reassignment
+    let products = productsSnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
-    
-    // Apply search
+
+    // Apply search using Fuse.js if a search term is provided
     if (search) {
       const fuse = new Fuse(products, { keys: ['title'] });
       products = fuse.search(search).map(({ item }) => item);
     }
 
-    // Apply sort
+    // Apply sort based on price
     products = products.sort((a, b) => {
       if (sort === 'asc') return a.price - b.price;
       return b.price - a.price;
     });
 
-    // Paginate
+    // Paginate the filtered products
     const paginatedProducts = products.slice(offset, offset + pageSize);
 
     return NextResponse.json({ products: paginatedProducts });

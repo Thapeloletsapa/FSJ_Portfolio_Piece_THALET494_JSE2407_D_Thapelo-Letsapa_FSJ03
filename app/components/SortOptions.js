@@ -36,8 +36,8 @@ export default function SortOptions({ selectedSort }) {
           aria-label="Sort products"
         >
           <option value="">Sort by</option>
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
+          <option value="asc">Price: Low to High</option>
+          <option value="desc">Price: High to Low</option>
         </select>
       </div>
     </div>

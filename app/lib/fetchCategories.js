@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 export const fetchCategories = async () => {
   try {
-    const response = await fetch("/api/categories");
+    const response = await fetch("../api/categories");
     if (!response.ok) {
       throw new Error("Failed to fetch categories");
     }
@@ -16,21 +16,33 @@ export const fetchCategories = async () => {
 
 function MyComponent() {
   const [categories, setCategories] = useState([]);
+  const [error, setError] = useState(null); // New state for error handling
+  const [loading, setLoading] = useState(true); // New state for loading status
 
   useEffect(() => {
     const fetchAndDisplayCategories = async () => {
-      const fetchedCategories = await fetchCategories();
-      setCategories(fetchedCategories);
+      setLoading(true); // Start loading
+      try {
+        const fetchedCategories = await fetchCategories();
+        setCategories(fetchedCategories);
+      } catch (error) {
+        setError("Failed to load categories."); // Set error message
+      } finally {
+        setLoading(false); // Stop loading
+      }
     };
     fetchAndDisplayCategories();
   }, []);
 
+  if (loading) return <div>Loading categories...</div>; // Show loading state
+  if (error) return <div>{error}</div>; // Show error if exists
+
   return (
     <div>
-<h2>Categories</h2>
+      <h2>Categories</h2>
       <ul>
         {categories.map((category) => (
-          <li key={category.id}> {/* Assuming each category has an id */}
+          <li key={category.id}> {/* Ensure category.id is unique */}
             {category.name} 
           </li>
         ))}
@@ -38,3 +50,5 @@ function MyComponent() {
     </div>
   );
 }
+
+export default MyComponent;

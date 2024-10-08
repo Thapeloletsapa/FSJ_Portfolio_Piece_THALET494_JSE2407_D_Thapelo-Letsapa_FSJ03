@@ -24,11 +24,13 @@ export default function Home() {
   const search = searchParams.get("search") || "";
   const sort = searchParams.get("sort") || "";
   const category = searchParams.get("category") || "";
-  const page = parseInt(searchParams.get("page") || "1", 10);
+  // const page = parseInt(searchParams.get("page") || "1", 10);
 
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const [page,setPage] = useState(parseInt(searchParams.get("page") || "1", 10))
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -40,11 +42,14 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    console.log('123')
     const loadProducts = async () => {
       setLoading(true);
-      const fetchedProducts = await fetchProducts(page, search, sort, category);
-      console.log("Fetched Products:", fetchedProducts); // Debug log
-      setProducts(fetchedProducts);
+      // const fetchedProducts = await fetchProducts(page, search, sort, category);
+      const response = await fetch(`http://localhost:3000/api/products?page=${page}&category=${category}&search=${search}&sort=${sort}`)
+      const fetchedProducts = await response.json()
+      console.log("Fetched Products:", fetchedProducts.products); // Debug log
+      setProducts(fetchedProducts.products);
       setLoading(false);
     };
 
@@ -62,6 +67,7 @@ export default function Home() {
       const params = new URLSearchParams(searchParams);
       params.set("page", newPage.toString());
       router.push(`/?${params.toString()}`);
+      setPage(newPage)
     }
   };
 
