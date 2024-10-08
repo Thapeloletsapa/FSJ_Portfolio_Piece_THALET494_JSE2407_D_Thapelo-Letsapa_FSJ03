@@ -1,16 +1,16 @@
-import { db } from '../../lib/firebase.js'; 
+// app/api/categories/route.js
+import { NextResponse } from 'next/server';
 import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/firebase';
 
-export async function GET(req) {
-  const categoriesCollection = collection(db, 'categories'); // Ensure you have a categories collection
-  const querySnapshot = await getDocs(categoriesCollection);
-  
-  const categories = querySnapshot.docs.map(doc => doc.data());
-  return new Response(JSON.stringify(categories), {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  
+export async function GET() {
+  try {
+    const categoriesCollection = collection(db, 'categories');
+    const categoriesSnapshot = await getDocs(categoriesCollection);
+    const categories = categoriesSnapshot.docs.map((doc) => doc.data());
+
+    return NextResponse.json({ categories });
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }

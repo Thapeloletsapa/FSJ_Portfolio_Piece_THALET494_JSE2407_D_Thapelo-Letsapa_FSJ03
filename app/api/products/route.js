@@ -1,73 +1,50 @@
-import { db } from '../../lib/firebase'; // adjust path as necessary
-import { collection, getDocs, query, where, orderBy, limit, startAfter } from 'firebase/firestore';
+// app/api/products/route.js
+import { NextResponse } from 'next/server';
+import { db } from '@/firebase'; // Import Firebase config
+import { collection, getDocs, query, orderBy, where } from 'firebase/firestore';
 import Fuse from 'fuse.js';
 
-// Initialize Firestore and set up your collection reference
-const productsCollection = collection(db, 'products');
+export async function GET(request) {
+  const url = new URL(request.url);
+  const page = parseInt(url.searchParams.get('page') || '1');
+  const pageSize = 10;
+  const offset = (page - 1) * pageSize;
 
-// Helper function to get paginated query
-async function getPaginatedQuery(q, limitCount, pageCursor) {
-  if (pageCursor) {
-    // Query the next page starting after the last document
-    q = query(q, limit(limitCount), startAfter(pageCursor));
-  } else {
-    q = query(q, limit(limitCount));
-  }
+  const search = url.searchParams.get('search') || '';
+  const category = url.searchParams.get('category') || '';
+  const sort = url.searchParams.get('sort') || 'asc';
 
-  const querySnapshot = await getDocs(q);
-  return querySnapshot;
-}
+  try {
+    const productsCollection = collection(db, 'products');
+    let productsQuery = productsCollection;
 
-// Handler for API requests
-export async function GET(req) {
-  const { searchParams } = new URL(req.url);
-  
-  // Get query parameters
-  const page = parseInt(searchParams.get('page')) || 1;
-  const limitCount = parseInt(searchParams.get('limit')) || 20;
-  const search = searchParams.get('search') || '';
-  const category = searchParams.get('category') || '';
-  const sortBy = searchParams.get('sortBy') || 'price';
-  const order = searchParams.get('order') || 'asc'; // 'asc' or 'desc'
-  const pageCursor = searchParams.get('cursor') || null; // Store cursor for pagination
+    if (category) {
+      productsQuery = query(productsCollection, where('category', '==', category));
+    }
 
-  let q = productsCollection;
+    const productsSnapshot = await getDocs(productsQuery);
+    let products = productsSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
 
-  // Apply category filter
-  if (category) {
-    q = query(q, where('category', '==', category));
-  }
+    // Apply search
+    if (search) {
+      const fuse = new Fuse(products, { keys: ['title'] });
+      products = fuse.search(search).map(({ item }) => item);
+    }
 
-  // Apply sorting
-  q = query(q, orderBy(sortBy, order));
-
-  // Pagination logic
-  const querySnapshot = await getPaginatedQuery(q, limitCount, pageCursor);
-  
-  let products = [];
-  let lastVisible = null;
-
-  // Get the last document of the current batch for pagination
-  querySnapshot.docs.forEach((doc) => {
-    products.push({ id: doc.id, ...doc.data() });
-    lastVisible = doc; // Keep track of the last document
-  });
-   
-  // Searching using Fuse.js if search is provided
-  if (search) {
-    const fuse = new Fuse(products, {
-      keys: ['title'],
-      includeScore: true,
+    // Apply sort
+    products = products.sort((a, b) => {
+      if (sort === 'asc') return a.price - b.price;
+      return b.price - a.price;
     });
-    const results = fuse.search(search);
-    products = results.map(result => result.item);
-  }
 
-  // Respond with products and the cursor for the next page
-  return new Response(JSON.stringify({ products, cursor: lastVisible ? lastVisible.id : null }), {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+    // Paginate
+    const paginatedProducts = products.slice(offset, offset + pageSize);
+
+    return NextResponse.json({ products: paginatedProducts });
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }

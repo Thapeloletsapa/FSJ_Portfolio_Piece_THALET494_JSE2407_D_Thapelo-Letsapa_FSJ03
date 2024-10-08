@@ -1,26 +1,40 @@
-/**
- * Fetches product categories from the API with caching enabled.
- *
- * @async
- * @function fetchCategories
- * @returns {Promise<Array>} - A promise that resolves to an array of categories.
- * @throws {Error} - Throws an error if the request fails.
- */
+import { useState, useEffect } from 'react';
+
 export const fetchCategories = async () => {
-    try {
-      const response = await fetch(
-        "/api/categories",
-        { cache: "force-cache" }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch categories");
-      }
-      const data = await response.json();
-      console.log("Fetched categories:", data); // Debug log
-      return data;
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-      return []; // Return an empty array in case of error
+  try {
+    const response = await fetch("/api/categories");
+    if (!response.ok) {
+      throw new Error("Failed to fetch categories");
     }
-  };
-  
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return []; // Return an empty array in case of error
+  }
+};
+
+function MyComponent() {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchAndDisplayCategories = async () => {
+      const fetchedCategories = await fetchCategories();
+      setCategories(fetchedCategories);
+    };
+    fetchAndDisplayCategories();
+  }, []);
+
+  return (
+    <div>
+<h2>Categories</h2>
+      <ul>
+        {categories.map((category) => (
+          <li key={category.id}> {/* Assuming each category has an id */}
+            {category.name} 
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
