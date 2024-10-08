@@ -13,21 +13,20 @@ export async function GET(request) {
   const search = url.searchParams.get('search') || '';
   const category = url.searchParams.get('category') || '';
   const sort = url.searchParams.get('sort') || 'asc';
-
+ 
   try {
     const productsCollection = collection(db, 'products');
-    let productsQuery = productsCollection;
-
-    if (category) {
-      productsQuery = query(productsCollection, where('category', '==', category));
-    }
+    const productsQuery = query(
+      productsCollection,
+      orderBy('price', sort === 'asc' ? 'asc' : 'desc')
+    );
 
     const productsSnapshot = await getDocs(productsQuery);
-    let products = productsSnapshot.docs.map((doc) => ({
+    const products = productsSnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
-
+    
     // Apply search
     if (search) {
       const fuse = new Fuse(products, { keys: ['title'] });
