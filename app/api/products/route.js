@@ -5,6 +5,19 @@ import Fuse from 'fuse.js';
 // Initialize Firestore and set up your collection reference
 const productsCollection = collection(db, 'products');
 
+// Helper function to get paginated query
+async function getPaginatedQuery(q, limitCount, pageCursor) {
+  if (pageCursor) {
+    // Query the next page starting after the last document
+    q = query(q, limit(limitCount), startAfter(pageCursor));
+  } else {
+    q = query(q, limit(limitCount));
+  }
+
+  const querySnapshot = await getDocs(q);
+  return querySnapshot;
+}
+
 // Handler for API requests
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
@@ -14,28 +27,30 @@ export async function GET(req) {
   const limitCount = parseInt(searchParams.get('limit')) || 20;
   const search = searchParams.get('search') || '';
   const category = searchParams.get('category') || '';
-  const sortBy = searchParams.get('sort') || 'asc'; // 'asc' or 'desc'
+  const sortBy = searchParams.get('sortBy') || 'price';
+  const order = searchParams.get('order') || 'asc'; // 'asc' or 'desc'
+  const pageCursor = searchParams.get('cursor') || null; // Store cursor for pagination
 
-  let q = query(productsCollection);
-  
+  let q = productsCollection;
+
   // Apply category filter
   if (category) {
     q = query(q, where('category', '==', category));
   }
 
   // Apply sorting
-  q = query(q, orderBy('price', sortBy));
+  q = query(q, orderBy(sortBy, order));
 
-  // Pagination
-  const offset = (page - 1) * limitCount;
-  q = query(q, limit(limitCount), startAfter(offset));
-
-  const querySnapshot = await getDocs(q);
+  // Pagination logic
+  const querySnapshot = await getPaginatedQuery(q, limitCount, pageCursor);
   
   let products = [];
+  let lastVisible = null;
+
+  // Get the last document of the current batch for pagination
   querySnapshot.docs.forEach((doc) => {
-    console.log(doc)
     products.push({ id: doc.id, ...doc.data() });
+    lastVisible = doc; // Keep track of the last document
   });
    
   // Searching using Fuse.js if search is provided
@@ -48,7 +63,8 @@ export async function GET(req) {
     products = results.map(result => result.item);
   }
 
-  return new Response(JSON.stringify(products), {
+  // Respond with products and the cursor for the next page
+  return new Response(JSON.stringify({ products, cursor: lastVisible ? lastVisible.id : null }), {
     status: 200,
     headers: {
       'Content-Type': 'application/json',
