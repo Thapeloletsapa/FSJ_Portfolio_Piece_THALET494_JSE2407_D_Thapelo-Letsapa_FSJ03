@@ -7,7 +7,6 @@ import ProductList from "./components/ProductList";
 import SearchBar from "./components/SearchBar";
 import SortOptions from "./components/SortOptions";
 import CategoryFilter from "./components/CategoryFilter";
-import { fetchProducts } from "./lib/fetchProducts";
 import { fetchCategories } from "./lib/fetchCategories";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
