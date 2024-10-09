@@ -81,11 +81,7 @@ export default function Home() {
 
   return (
     <>
-      <Header
-        title="Quality Over Price"
-        description="Visit our online store"
-      />
-
+     
       <Suspense fallback={<div>Loading...</div>}>
         <section className="container mx-auto px-4 py-8">
           
