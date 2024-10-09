@@ -4,6 +4,9 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from "../src/firebaseConfig";
 import { useState } from 'react';
 import Link from 'next/link';
+import { signOut as firebaseSignOut } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../lib/firebase';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -13,6 +16,23 @@ export default function Login() {
     e.preventDefault();
     // Implement login logic here
     const auth = getAuth(app);
+
+   const signIn = async (email, password) => {
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        return userCredential.user;
+      } catch (error) {
+        throw error.message;
+      }
+    };
+
+     const signOut = async () => {
+      try {
+        await firebaseSignOut(auth);
+      } catch (error) {
+        throw error.message;
+      }
+    };
 
 function signUp(email, password) {
   signInWithEmailAndPassword(auth, email, password)
