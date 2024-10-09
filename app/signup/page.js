@@ -39,19 +39,19 @@ export default function SignUp() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 bg-white bg-opacity-30 text-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 bg-white bg-opacity-30 text-black rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 bg-white bg-opacity-30 text-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 bg-white bg-opacity-30 text-black rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <div className="flex justify-between items-center">
             <button
               type="submit"
-              className="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300"
+              className="w-full py-2 bg-blue-500 text-black rounded-lg hover:bg-blue-600 transition duration-300"
             >
               Sign Up
             </button>
@@ -61,7 +61,7 @@ export default function SignUp() {
         <div className="mt-6 flex justify-between space-x-4">
           <button
             onClick={handleLoginRedirect}
-            className="w-full py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-300"
+            className="w-full py-2 bg-green-500 text-black rounded-lg hover:bg-green-600 transition duration-300"
           >
             Log In
           </button>

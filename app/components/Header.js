@@ -19,7 +19,7 @@ const cartItems = 0;
 
   
   return (
-    <header className="border-b w-full border-palette-lighter sticky top-0 z-20 bg-white/10 backdrop-blur-md  border-white/80 shadow-lg">
+    <header className="border-b w-full border-palette-lighter sticky top-0 z-20 bg-white/10 backdrop-blur-md  border-white/50 shadow-lg">
        <link rel="icon" href="/favicon.ico" />
        <meta name="ecommerce" content="Next.js ecommerce" />
       <div className="flex items-center justify-between mx-auto max-w-6xl px-6 pb-2 pt-4 md:pt-6">
@@ -54,11 +54,10 @@ const cartItems = 0;
             </div>
           </Link>
         </div>
-        <Link href={`../signup`}>
+        
         <div>
-        <i className="fa fa-sign-in" aria-hidden="true">Signup</i>
+        <i className="fa fa-sign-in" aria-hidden="true">Sign in</i>
         </div>
-        </Link>
       </div>
     </header >
   )

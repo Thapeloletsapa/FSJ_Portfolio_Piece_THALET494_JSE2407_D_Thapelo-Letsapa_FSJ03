@@ -40,9 +40,9 @@ export const signUp = async (email, password) => {
   };
   
   export const logOut = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  };
+  try {
+    await signOut(auth);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
