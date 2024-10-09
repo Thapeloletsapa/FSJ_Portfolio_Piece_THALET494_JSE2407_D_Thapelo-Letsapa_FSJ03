@@ -14,7 +14,7 @@ export default function Login() {
     // Implement login logic here
     const auth = getAuth(app);
 
-function signInUser(email, password) {
+function signUp(email, password) {
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       console.log("Signed in:", userCredential.user);
