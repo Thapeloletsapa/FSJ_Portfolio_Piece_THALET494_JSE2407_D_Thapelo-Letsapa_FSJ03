@@ -46,7 +46,7 @@ export default function Home() {
       setLoading(true);
       // const fetchedProducts = await fetchProducts(page, search, sort, category);
       
-      const response = await fetch(`http://localhost:3000/api/products?page=${page}&category=${category}&search=${search}&sort=${sort}`)
+      const response = await fetch(`/api/products?page=${page}&category=${category}&search=${search}&sort=${sort}`);
       const fetchedProducts = await response.json()
       console.log("Fetched Products:", fetchedProducts.products); // Debug log
       setProducts(fetchedProducts.products);
