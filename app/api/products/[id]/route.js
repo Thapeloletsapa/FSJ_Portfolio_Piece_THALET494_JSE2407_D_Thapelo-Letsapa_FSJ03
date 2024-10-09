@@ -1,7 +1,6 @@
-// app/api/products/[id]/route.js
 import { NextResponse } from 'next/server';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '@/firebase';
+import { db } from '@/firebase'; // Firebase config
 
 export async function GET(request, { params }) {
   const { id } = params;

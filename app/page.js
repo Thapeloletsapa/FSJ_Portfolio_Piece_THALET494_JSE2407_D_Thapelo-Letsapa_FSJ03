@@ -41,10 +41,11 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    console.log('123')
+    
     const loadProducts = async () => {
       setLoading(true);
       // const fetchedProducts = await fetchProducts(page, search, sort, category);
+      
       const response = await fetch(`http://localhost:3000/api/products?page=${page}&category=${category}&search=${search}&sort=${sort}`)
       const fetchedProducts = await response.json()
       console.log("Fetched Products:", fetchedProducts.products); // Debug log
@@ -116,20 +117,21 @@ export default function Home() {
          
 
           {loading ? (
-            <div className="flex justify-center items-center h-64">
-              <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500"></div>
-            </div>
-          ) : products.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {products.map((product) => (
-                <ProductList key={product.id} product={product} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-center text-xl text-gray-600 mt-8">
-              No products available.
-            </p>
-          )}
+  <div className="flex justify-center items-center h-64">
+    <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500"></div>
+  </div>
+) : products && products.length > 0 ? (  // Add products && check
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {products.map((product) => (
+      <ProductList key={product.id} product={product} />
+    ))}
+  </div>
+) : (
+  <p className="text-center text-xl text-gray-600 mt-8">
+    No products available.
+  </p>
+)}
+
 
           <div className="flex justify-between items-center mt-8">
             <button
@@ -142,10 +144,10 @@ export default function Home() {
             <span className="font-semibold text-gray-700">Page {page}</span>
             <button
               onClick={() => handlePagination(page + 1)}
-              disabled={products.length < 20 || loading}
+              disabled={!products||products.length < 20 || loading}
               className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading && products.length === 20 ? "Loading..." : "Next"}
+               {loading && products && products.length === 20 ? "Loading..." : "Next"} 
             </button>
           </div>
         </section>
