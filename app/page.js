@@ -34,7 +34,8 @@ export default function Home() {
   useEffect(() => {
     const loadCategories = async () => {
       const categoriesData = await fetchCategories();
-      setCategories(categoriesData);
+      console.log(categoriesData)
+      setCategories(categoriesData.categories);
     };
 
     loadCategories();

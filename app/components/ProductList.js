@@ -42,7 +42,7 @@ export default function ProductList({ product }) {
 
   return (
     <Link
-      href={`/product/${product.id}?${searchParams.toString()}`}
+      href={`/products/${product.id}?${searchParams.toString()}`}
       className="block p-4 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow"
     >
       <div className="relative bg-slate-300">
