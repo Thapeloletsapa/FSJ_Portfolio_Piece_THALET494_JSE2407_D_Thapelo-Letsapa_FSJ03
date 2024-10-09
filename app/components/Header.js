@@ -54,6 +54,9 @@ const cartItems = 0;
             </div>
           </Link>
         </div>
+        <div>
+        <i class="fa fa-sign-in" aria-hidden="true">Sign in</i>
+        </div>
       </div>
     </header >
   )

@@ -1,7 +1,7 @@
 // app/signup/page.js
 'use client';
 import { useState } from 'react';
-import { signUp } from '../../lib/auth';
+import { signUp } from '../lib/useAuth';
 
 export default function SignUp() {
   const [email, setEmail] = useState('');

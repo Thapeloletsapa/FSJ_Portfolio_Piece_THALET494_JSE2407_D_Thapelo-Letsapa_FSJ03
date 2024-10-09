@@ -1,7 +1,8 @@
 // lib/useAuth.js
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './firebaseConfig';
+import { auth } from '../lib/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const useAuth = () => {
   const [user, setUser] = useState(null);
@@ -17,3 +18,12 @@ const useAuth = () => {
 };
 
 export default useAuth;
+
+export const signUp = async (email, password) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      return userCredential.user;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };

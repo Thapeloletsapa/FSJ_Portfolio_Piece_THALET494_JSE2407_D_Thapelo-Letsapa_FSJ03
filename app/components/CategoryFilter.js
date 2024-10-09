@@ -41,7 +41,7 @@ export default function CategoryFilter({ categories, selectedCategory }) {
           className="px-4 py-2 border rounded-md text-black"
         >
           <option value="">All Categories</option>
-          { categories.length > 0 ? (
+          { categories && categories.length > 0 ? (
             categories.map((category) => (
               <option key={category} value={category}>
                 {category}
