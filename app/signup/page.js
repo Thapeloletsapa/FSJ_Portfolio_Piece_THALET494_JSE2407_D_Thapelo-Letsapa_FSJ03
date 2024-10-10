@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signUp } from "../lib/firebaseAuth";
+import { signUp } from "../lib/useAuth";
 
 const SignUpPage = () => {
   const [email, setEmail] = useState("");

@@ -1,7 +1,13 @@
 "use client";
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { faShopLock } from '@fortawesome/free-solid-svg-icons';
+import { signOut } from '../lib/useAuth';
+
+
+
+
+
 /**
  * next/link allows you to do client-side route transitions between pages, by
  * wrapping your anchor tags in a Link component. It also allows you to pass
@@ -35,29 +41,28 @@ const cartItems = 0;
         </Link>
         <div>
           <Link
-            href="/cart"
+            href="../signup"
             passHref
           >
             
             <div className=" relative" aria-label="cart">
-              <FontAwesomeIcon className="text-palette-primary w-6 m-auto" icon={faShoppingCart} />
-              {
-                cartItems === 0 ?
-                  null
-                  :
-                  <div
-                    className="absolute top-0 right-0 text-xs bg-yellow-300 text-gray-900 font-semibold rounded-full py-1 px-2 transform translate-x-10 -translate-y-3"
-                  >
-                    {cartItems}
-                  </div>
-              }
+              <FontAwesomeIcon className="text-palette-primary w-50 m-auto" icon={faShopLock} />
+              
             </div>
+         
           </Link>
+          <button
+        type="submit"
+        aria-label="Submit search"
+        className="ml-10 px-6 py-3 bg-transparent text-black font-semibold rounded-md shadow-lg hover:bg-pink-60 focus:ring-2 focus:ring-blue-500 focus:outline-none transition duration-300 ease-in-out"
+      >
+       signOut
+      </button>
+           
+         
         </div>
         
-        <div>
-        <i className="fa fa-sign-in" aria-hidden="true">Sign in</i>
-        </div>
+       
       </div>
     </header >
   )

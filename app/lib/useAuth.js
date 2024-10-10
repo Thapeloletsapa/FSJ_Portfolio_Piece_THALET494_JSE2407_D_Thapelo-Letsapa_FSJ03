@@ -46,3 +46,16 @@ export const signUp = async (email, password) => {
     throw new Error(error.message);
   }
 };
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (user) => {
+        unsubscribe(); // Unsubscribe after the first call to prevent memory leaks
+        resolve(user);
+      },
+      reject
+    );
+  });
+};
