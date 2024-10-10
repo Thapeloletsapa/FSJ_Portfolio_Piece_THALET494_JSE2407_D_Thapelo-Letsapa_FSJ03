@@ -1,71 +1,72 @@
 "use client";
-import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShopLock } from '@fortawesome/free-solid-svg-icons';
-import { signOut } from '../lib/useAuth';
+
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { getCurrentUser, logOut } from "../lib/useAuth";
 
 
+export default function Header() {
+  const [user, setUser] = useState(null);
+  const router = useRouter();
 
+  // Load current user on component mount
+  useEffect(() => {
+    const loadUser = async () => {
+      const currentUser = await getCurrentUser();
+      setUser(currentUser);
+    };
+    loadUser();
+  }, []);
 
+  const handleLogout = async () => {
+    await logOut();
+    setUser(null); // Reset user state after logout
+    router.push("/"); // Redirect to home page after logging out
+  };
 
-/**
- * next/link allows you to do client-side route transitions between pages, by
- * wrapping your anchor tags in a Link component. It also allows you to pass
- * props through to the linked page, which can be used to pre-render the page
- * with the correct data.
- *
- * Link uses the browser's history API to navigate between pages, which
- * allows it to work with the browser's back and forward buttons.
- *
- * @see https://nextjs.org/docs/api-reference/next/link
- */
-
-const  Header = () => {
-const cartItems = 0;
-
-  
   return (
-    <header className="border-b w-full border-palette-lighter sticky top-0 z-20 bg-white/10 backdrop-blur-md  border-white/50 shadow-lg">
-       <link rel="icon" href="/favicon.ico" />
-       <meta name="ecommerce" content="Next.js ecommerce" />
-      <div className="flex items-center justify-between mx-auto max-w-6xl px-6 pb-2 pt-4 md:pt-6">
-        <Link href="/" passHref>
-          <div className=" cursor-pointer">
-            <h1 className="flex no-underline">
-              
-              <span className="text-xl font-primary font-bold tracking-tight pt-1">
-                My ecommerce store
-              </span>
-            </h1>
-          </div>
+    <header className="bg-gray-300 p-4 shadow-lg">
+      <nav className="container mx-auto flex justify-between items-center">
+        <Link
+          href="/"
+          className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-200 to-pink-900"
+        >
+          My ecommerce store
         </Link>
-        <div>
-          <Link
-            href="../signup"
-            passHref
-          >
-            
-            <div className=" relative" aria-label="cart">
-              <FontAwesomeIcon className="text-palette-primary w-50 m-auto" icon={faShopLock} />
-              
-            </div>
-         
-          </Link>
-          <button
-        type="submit"
-        aria-label="Submit search"
-        className="ml-10 px-6 py-3 bg-transparent text-black font-semibold rounded-md shadow-lg hover:bg-pink-60 focus:ring-2 focus:ring-blue-500 focus:outline-none transition duration-300 ease-in-out"
-      >
-       signOut
-      </button>
-           
-         
-        </div>
-        
-       
-      </div>
-    </header >
-  )
-}
 
-export default Header;
+        <div className="flex items-center space-x-4">
+          {user ? (
+            // Display user's email and a logout button if logged in
+            <>
+              <span className="text-gray-700">Welcome, {user.email}</span>
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-300"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            // Show login and sign-up links if the user is not logged in
+            <>
+              <Link
+                href="/login"
+                className="flex items-center space-x-1 hover:text-blue-500 transition duration-300"
+              >
+               
+                <span>Login</span>
+              </Link>
+              <Link
+                href="/signup"
+                className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
+        </div>
+      </nav>
+    </header>
+  );
+}
