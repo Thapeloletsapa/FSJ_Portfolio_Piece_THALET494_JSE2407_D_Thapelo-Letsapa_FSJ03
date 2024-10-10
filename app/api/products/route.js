@@ -6,6 +6,7 @@ import Fuse from 'fuse.js';
 export async function GET(request) {
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get('page') || '1');
+  console.log('12345677')
   const pageSize = 20;
   const offset = (page - 1) * pageSize;
 
@@ -23,13 +24,14 @@ export async function GET(request) {
     }
 
     const productsSnapshot = await getDocs(productsQuery);
-    
     // Transform the Firestore documents to JavaScript objects
-    let products = productsSnapshot.docs.map((doc) => ({
+    let products = productsSnapshot.docs.map((doc) => {
+      console.log(doc,'12345678')
+      return{
       id: doc.id,
       ...doc.data(),
-    }));
-
+    }});
+  console.log(products[0])
     // Apply search using Fuse.js if search term is provided
     if (search) {
       const fuse = new Fuse(products, { keys: ['title'], threshold: 0.3 });
@@ -47,6 +49,6 @@ export async function GET(request) {
 
     return NextResponse.json({ products: paginatedProducts });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error1: error.message }, { status: 500 });
   }
 }

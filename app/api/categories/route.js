@@ -4,6 +4,7 @@ import { collection, getDoc,doc } from 'firebase/firestore';
 import { db } from '@/firebase';
 
 export async function GET() {
+  console.log('123')
   try {
     const categoriesCollection = doc(db, 'categories','allCategories');
     const categoriesSnapshot = await getDoc(categoriesCollection);

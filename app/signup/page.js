@@ -1,73 +1,157 @@
-// app/signup/page.js
-'use client';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation'; // For navigation
-import { signUp } from '../lib/useAuth';
-import BackToProductButton from '@/components/BackToProductButton';
+"use client";
 
-export default function SignUp() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const router = useRouter(); // For navigation
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { signUp } from "../lib/firebaseAuth";
+
+const SignUpPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    if (!email || !password || !confirmPassword || !displayName) {
+      setErrorMessage("All fields are required");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setErrorMessage("Passwords do not match");
+      return;
+    }
+
+    setErrorMessage("");
+    setLoading(true);
+
     try {
-      await signUp(email, password);
-      alert('User created successfully!');
-      router.push('/products'); // Navigate to products after successful sign-up
+      await signUp(email, password, displayName);
+      router.push("/");
     } catch (error) {
-      alert(error.message);
+      setErrorMessage(error.message || "Sign up failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleLoginRedirect = () => {
-    router.push('/login'); // Redirect to login page
-  };
-
-  const handleBackToProducts = () => {
-    router.push('/products'); // Redirect back to products page
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-cover bg-center" style={{ backgroundImage: 'url("/your-background-image.jpg")' }}>
-      <div className="bg-white bg-opacity-10 backdrop-blur-lg p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-3xl font-bold text-center text-white mb-6">Sign Up</h2>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Sign Up</h2>
         <form onSubmit={handleSignUp} className="space-y-4">
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 bg-white bg-opacity-30 text-black rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 bg-white bg-opacity-30 text-black rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <div className="flex justify-between items-center">
-            <button
-              type="submit"
-              className="w-full py-2 bg-blue-500 text-black rounded-lg hover:bg-blue-600 transition duration-300"
+          <div>
+            <label
+              htmlFor="displayName"
+              className="block text-sm font-medium text-gray-700"
             >
-              Sign Up
-            </button>
+              Display Name:
+            </label>
+            <input
+              type="text"
+              id="displayName"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              placeholder="Enter your display name"
+              required
+              className="mt-1 block w-full px-3 py-2 text-black bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500"
+            />
           </div>
-        </form>
 
-        <div className="mt-6 flex justify-between space-x-4">
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Email:
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              required
+              className="mt-1 block w-full px-3  text-black py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Password:
+            </label>
+            <div className="mt-1 relative rounded-md shadow-sm">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                required
+                className="block text-black w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-500 focus:border-gray-500"
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute inset-y-0 right-0 px-3 flex items-center text-sm leading-5 text-black hover:text-gray-500"
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Confirm Password:
+            </label>
+            <input
+              type={showPassword ? "text" : "password"}
+              id="confirmPassword"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Confirm your password"
+              required
+              className="mt-1 block w-full px-3 py-2  text-black bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500"
+            />
+          </div>
+
+          {errorMessage && (
+            <div className="text-red-600 text-sm">{errorMessage}</div>
+          )}
+
+          {loading && (
+            <div className="text-gray-600 text-sm">
+              Creating account, please wait...
+            </div>
+          )}
+
           <button
-            onClick={handleLoginRedirect}
-            className="w-full py-2 bg-green-500 text-black rounded-lg hover:bg-green-600 transition duration-300"
+            type="submit"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
+            disabled={
+              loading || !email || !password || !confirmPassword || !displayName
+            }
           >
-            Log In
+            {loading ? "Creating Account..." : "Sign Up"}
           </button>
-          <BackToProductButton />
-        </div>
+        </form>
       </div>
     </div>
   );
-}
+};
+
+export default SignUpPage;

@@ -1,18 +1,14 @@
 import { useState, useEffect } from 'react';
 
 export const fetchCategories = async () => {
-  try {
-    const response = await fetch("/api/categories");
-    console.log(response)
-    if (!response.ok) {
-      throw new Error("Failed to fetch categories");
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching categories:", error);
+  const response = await fetch("/api/categories");
+  console.log(response)
+  if (!response.ok) {
+    console.error("Error fetching categories:", "Failed to fetch categories");
     return []; // Return an empty array in case of error
   }
+  const data = await response.json();
+  return data;
 };
 
 function MyComponent() {
