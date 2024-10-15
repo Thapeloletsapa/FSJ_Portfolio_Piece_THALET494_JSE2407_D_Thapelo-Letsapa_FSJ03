@@ -1,21 +1,23 @@
-import { NextResponse } from 'next/server';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '@/firebase'; // Firebase config
+// src/app/api/products/[id]/route.js
+import { db } from "@/firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 export async function GET(request, { params }) {
   const { id } = params;
 
   try {
-    const productDoc = doc(db, 'products', id);
-    const productSnapshot = await getDoc(productDoc);
+    const productRef = doc(db, "products", id);
+    const productSnap = await getDoc(productRef);
 
-    if (!productSnapshot.exists()) {
-      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    if (!productSnap.exists()) {
+      return new Response("Product not found", { status: 404 });
     }
 
-    const product = { id: productSnapshot.id, ...productSnapshot.data() };
-    return NextResponse.json({ product });
+    return new Response(JSON.stringify(productSnap.data()), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return new Response("Error fetching product", { status: 500 });
   }
 }
