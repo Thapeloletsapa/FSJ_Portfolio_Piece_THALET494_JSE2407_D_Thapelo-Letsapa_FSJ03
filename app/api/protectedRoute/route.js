@@ -1,6 +1,6 @@
 // app/api/protectedRoute/route.js
 import { NextResponse } from 'next/server';
-import { verifyIdToken } from '../../../lib/firebaseAdmin';
+import { verifyIdToken } from '../../lib/firebaseAdmin';
 
 export async function GET(request) {
   const authHeader = request.headers.get('authorization');
